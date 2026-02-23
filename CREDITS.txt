@@ -1,0 +1,43 @@
+﻿Flappy Chaos
+Developed using Godot 4
+
+
+----------------------------------------
+CODE & IMPLEMENTATION
+----------------------------------------
+All game logic, mechanics, architecture, and implementation were created by:
+Renz Rendel De Arroz
+
+
+----------------------------------------
+ASSETS
+----------------------------------------
+
+
+Flappy Bird Asset Pack:
+https://github.com/russs123/godot_flappy_bird_assets
+
+Pixel Art Bird 16x16 by ma9ici4n:
+https://ma9ici4n.itch.io/pixel-art-bird-16x16
+
+Bird Sprite by Joshua Briggs:
+https://joshua-briggs.itch.io/bird-sprite
+
+
+Assets are used under the licensing terms provided in the repository.
+All rights belong to their respective creators.
+
+
+----------------------------------------
+ENGINE
+----------------------------------------
+Godot Engine 4.x
+https://godotengine.org/
+
+
+----------------------------------------
+DISCLAIMER
+----------------------------------------
+This project was created for academic purposes only.
+It is not affiliated with or endorsed by the original creators of Flappy Bird.
+All third-party assets are credited appropriately.
