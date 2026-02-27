@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bvpnynt0wo3dj"]
 
-[ext_resource type="Script" uid="uid://5gxj7vbrb1jm" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://5gxj7vbrb1jm" path="res://main/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bhinnyososv0i" path="res://flappy_bird_assets/bg.png" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://cq00io33eakq0" path="res://pipe.tscn" id="2_lquwl"]
-[ext_resource type="PackedScene" uid="uid://d06d3oj7osvuh" path="res://bird.tscn" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://dpw5bv7a17q38" path="res://ground.tscn" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://d02tne1hvhj05" path="res://game_over.tscn" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://cq00io33eakq0" path="res://pipe/pipe.tscn" id="2_lquwl"]
+[ext_resource type="PackedScene" uid="uid://d06d3oj7osvuh" path="res://bird/bird.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dpw5bv7a17q38" path="res://ground/ground.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://d02tne1hvhj05" path="res://game_over/game_over.tscn" id="6_7mycd"]
 
 [node name="Main" type="Node2D" unique_id=269182662]
 script = ExtResource("1_h2yge")
