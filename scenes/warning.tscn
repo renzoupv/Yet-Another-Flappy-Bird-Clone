@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cyo2rxlj1e3h1"]
+
+[ext_resource type="Texture2D" uid="uid://5cxbqxxk4ryp" path="res://assets/missile_warning.png" id="1_8jokm"]
+[ext_resource type="Script" uid="uid://d2821n1b1ayx8" path="res://scripts/warning.gd" id="1_fgfcp"]
+[ext_resource type="AudioStream" uid="uid://bye3ur0xnlkio" path="res://assets/missile_warning.wav" id="3_i3rmn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8jokm"]
+atlas = ExtResource("1_8jokm")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lv2aw"]
+atlas = ExtResource("1_8jokm")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgfcp"]
+atlas = ExtResource("1_8jokm")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3rmn"]
+atlas = ExtResource("1_8jokm")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_18pth"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8jokm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lv2aw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgfcp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3rmn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Node2D" type="Node2D" unique_id=1924682548]
+script = ExtResource("1_fgfcp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1661549977]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_18pth")
+frame_progress = 0.2551573
+
+[node name="MissileWarning" type="AudioStreamPlayer" parent="." unique_id=705744786]
+stream = ExtResource("3_i3rmn")

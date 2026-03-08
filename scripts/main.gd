@@ -1,0 +1,173 @@
+extends Node2D
+
+var missile_difficulty_timer := 0.0
+var difficulty_timer:= 0.0
+var distance_score := 0.0
+var game_running : bool
+var game_over : bool
+var scroll
+var score
+var scroll_speed := 8.0
+var screen_size : Vector2i
+var ground_height : int
+
+@export var warning_scene : PackedScene
+
+@export var missile_scene : PackedScene
+var missiles : Array
+
+@export var pipe_scene : PackedScene
+var pipes : Array
+const PIPE_DELAY : int = 50
+const PIPE_RANGE : int = 200
+
+
+func _ready() -> void:
+	screen_size = get_window().size
+	new_game()
+
+func new_game() -> void:
+	$BGMusic.play()
+	$HUD.new_game()
+	game_running = false
+	game_over = false
+	scroll_speed = 8
+	distance_score = 0
+	missile_difficulty_timer = 0
+	score = 0
+	scroll = 0
+	$PipeTimer.wait_time = 1
+	$MissileTimer.wait_time = 3
+	$Bird.reset()
+	$HUD.update_score(0)
+	
+	for p in pipes:
+		if is_instance_valid(p):
+			p.queue_free()
+	pipes.clear()
+	
+	for m in missiles:
+		if is_instance_valid(m):
+			m.queue_free()
+	missiles.clear()
+
+func _input(event) -> void:
+	if game_over == false:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+				if game_running == false :
+					start_game()
+				else:
+					if $Bird.flying:
+						$Bird.flap()
+
+
+func start_game() -> void:
+	game_running = true
+	$Bird.flying = true
+	$Bird.flap()
+	$HUD.start_game()
+	$PipeTimer.start()
+	$MissileTimer.start()
+	
+func _process(delta: float) -> void:
+	if not game_running:
+		return
+		
+	distance_score += scroll_speed * delta
+	score = int(distance_score)
+	$HUD.update_score(score)
+	
+	scroll_speed += delta * 0.5
+	difficulty_timer += delta
+	#missile_difficulty_timer += delta
+	#
+	#if missile_difficulty_timer > 10:
+		#missile_difficulty_timer = 0
+		#$MissileTimer.wait_time = max(0.8, $MissileTimer.wait_time - 0.05)
+	
+	if difficulty_timer > 5:
+		difficulty_timer = 0
+		$PipeTimer.wait_time = max(0.5, $PipeTimer.wait_time * 1.09)
+		$MissileTimer.wait_time = max(0.8, $MissileTimer.wait_time * 0.95)
+	
+	scroll += scroll_speed
+	if scroll >= screen_size.x:
+		scroll = 0
+	
+	$Ground.position.x = -scroll
+	
+	for pipe in pipes:
+		pipe.position.x -= scroll_speed
+	
+	for missile in missiles:
+		missile.position.x -= scroll_speed + 10
+		
+	for i in range(pipes.size() - 1, -1, -1):
+		if is_instance_valid(pipes[i]) and pipes[i].position.x < -200:
+			pipes[i].queue_free()
+			pipes.remove_at(i)
+			
+	for i in range(missiles.size() - 1, -1, -1):
+		if is_instance_valid(missiles[i]) and missiles[i].position.x < -200:
+			missiles[i].queue_free()
+			missiles.remove_at(i)
+
+
+func _on_pipe_timer_timeout() -> void:
+	generate_pipes()
+	
+func generate_pipes() -> void:	
+	var pipe = pipe_scene.instantiate()
+	pipe.orientation = randi_range(0, 4)
+	pipe.position.x = screen_size.x + PIPE_DELAY
+	pipe.position.y = pipe_position()
+	pipe.hit.connect(bird_hit)
+	add_child(pipe)
+	pipes.append(pipe)
+
+func pipe_position() -> int:
+	var pos : int = randi_range(1, 3)
+	var pipe_pos : int	
+	match pos:
+		1: 
+			pipe_pos = 680
+		2:
+			pipe_pos = 180
+		3:
+			pipe_pos = 400
+	return pipe_pos
+
+func _on_missile_timer_timeout() -> void:
+	generate_missile()
+
+func generate_missile() -> void:
+	var spawn_pos = Vector2(
+		screen_size.x - 50,
+		clamp($Bird.position.y, 100, screen_size.y - 100)
+	)
+	var warning = warning_scene.instantiate()
+	warning.position = spawn_pos
+	add_child(warning)
+	
+	await get_tree().create_timer(randf_range(0.6, 1.2)).timeout
+	
+	if not game_running:
+		return
+	
+	var missile = missile_scene.instantiate()
+	missile.position = spawn_pos
+	
+	missile.hit.connect(bird_hit)
+	add_child(missile)
+	missiles.append(missile)
+	
+func bird_hit() -> void:
+	game_running = false
+	game_over = true
+	$HUD.reset_game()
+	$PipeTimer.stop()
+	$MissileTimer.stop()
+	$Bird.hit()
+
+	

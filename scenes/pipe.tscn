@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dam3g2okjlmw6"]
+
+[ext_resource type="Script" uid="uid://deenmqt8ux2f" path="res://scripts/pipe.gd" id="1_arpqm"]
+[ext_resource type="Texture2D" uid="uid://duyrxey1mxeit" path="res://assets/pipe.png" id="1_b6252"]
+[ext_resource type="AudioStream" uid="uid://cnpqw73nw7xlm" path="res://assets/Roblox Oof - Sound Effect ｜ SowaSFX.wav" id="3_8p0di"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8x3ej"]
+size = Vector2(62, 207)
+
+[node name="Pipe" type="Area2D" unique_id=970621221]
+z_as_relative = false
+script = ExtResource("1_arpqm")
+
+[node name="Pipe" type="Sprite2D" parent="." unique_id=1341762521]
+position = Vector2(-9.0897083e-07, -10.374983)
+scale = Vector2(0.79487175, 0.35580364)
+texture = ExtResource("1_b6252")
+
+[node name="Pipe2" type="Sprite2D" parent="." unique_id=106171122]
+position = Vector2(-0.0029356778, 17.255262)
+rotation = 3.1415927
+scale = Vector2(0.79446566, 0.28473297)
+texture = ExtResource("1_b6252")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1887212054]
+position = Vector2(0, -6.5)
+shape = SubResource("RectangleShape2D_8x3ej")
+
+[node name="OofSound" type="AudioStreamPlayer" parent="." unique_id=1829214841]
+stream = ExtResource("3_8p0di")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -8,23 +8,25 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
-config/name="Flappy Bird"
-run/main_scene="uid://bvpnynt0wo3dj"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/name="Flappy Joyride"
+run/main_scene="uid://bts7d17mk4m1u"
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=864
-window/size/viewport_height=936
-
-[physics]
-
-3d/physics_engine="Jolt Physics"
+window/size/viewport_width=1400
+window/size/viewport_height=800
+window/stretch/mode="viewport"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://drkdlungo3duh"]
+
+[ext_resource type="FontFile" uid="uid://cxtvi8lf1u0ak" path="res://assets/ka1.ttf" id="1_ahhtf"]
+[ext_resource type="Script" uid="uid://dfvm55v3lgop4" path="res://scripts/hud.gd" id="1_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://c1p4dltgmbtqd" path="res://assets/restart.png" id="3_5ysmq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6fi6k"]
+font = ExtResource("1_ahhtf")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_ahhtf"]
+font = ExtResource("1_ahhtf")
+font_size = 80
+
+[sub_resource type="LabelSettings" id="LabelSettings_oo0fn"]
+font = ExtResource("1_ahhtf")
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5ysmq"]
+font = ExtResource("1_ahhtf")
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="CanvasLayer" unique_id=151399842]
+script = ExtResource("1_oo0fn")
+
+[node name="display" type="MarginContainer" parent="." unique_id=1760432028]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -146.0
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Instruc" type="Label" parent="display" unique_id=335011804]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Click Anywhere to Start"
+label_settings = SubResource("LabelSettings_6fi6k")
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="display" unique_id=1071499942]
+layout_mode = 2
+text = "Flappy Joyride"
+label_settings = SubResource("LabelSettings_ahhtf")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="stats" type="MarginContainer" parent="." unique_id=1304378450]
+offset_right = 1398.0
+offset_bottom = 46.0
+
+[node name="Header" type="Label" parent="stats" unique_id=561912578]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Distance:"
+label_settings = SubResource("LabelSettings_oo0fn")
+
+[node name="ScoreLabel" type="Label" parent="stats" unique_id=1960944561]
+layout_mode = 2
+text = "0 m"
+label_settings = SubResource("LabelSettings_5ysmq")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="reset" type="Button" parent="." unique_id=885468556]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -25.0
+offset_right = 64.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("3_5ysmq")
+
+[connection signal="pressed" from="reset" to="." method="_on_reset_pressed"]

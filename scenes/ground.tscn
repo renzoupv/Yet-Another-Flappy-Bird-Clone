@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://duumhs46gvyt4"]
+
+[ext_resource type="Texture2D" uid="uid://dxybxc0lqnb1w" path="res://assets/ground.png" id="1_pybca"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mi8v4"]
+size = Vector2(2789, 168)
+
+[node name="Ground" type="StaticBody2D" unique_id=1230504100]
+
+[node name="Lower" type="Sprite2D" parent="." unique_id=31034014]
+position = Vector2(1394, 818)
+scale = Vector2(1.6131366, 1)
+texture = ExtResource("1_pybca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1316534147]
+position = Vector2(1394.5, 818)
+shape = SubResource("RectangleShape2D_mi8v4")
+
+[node name="Upper" type="Sprite2D" parent="." unique_id=97595814]
+position = Vector2(1392.0001, -27)
+rotation = -3.1415925
+scale = Vector2(1.6131366, 1)
+texture = ExtResource("1_pybca")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1441245944]
+position = Vector2(1393, -27)
+shape = SubResource("RectangleShape2D_mi8v4")
