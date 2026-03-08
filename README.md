@@ -1,62 +1,42 @@
-# 🐦 Flappy Chaos
+# Flappy Joyride
 
-A Flappy Bird clone with dynamic disruption mechanics built in Godot 4.
+A high-intensity Flappy Bird clone with ballistic hazards and dynamic obstacles built in Godot 4.
 
 ---
 
 ## 📖 Project Description
 
-Flappy Chaos is an original Godot 4 implementation inspired by Flappy Bird, featuring a unique mechanical twist: roaming airborne hazards that temporarily destabilize gameplay. Players must navigate through procedurally generated pipe gaps using gravity-based flapping mechanics while avoiding both static obstacles and randomly spawning birds that fly across the screen.
-
-Colliding with these roaming birds does not immediately end the game; instead, it triggers a temporary screen shake effect that disrupts visibility and increases difficulty before returning to normal gameplay.
-
-This project focuses on clean architecture, proper state management, procedural obstacle spawning, and signal-driven communication between scenes while maintaining tight game feel and responsive controls.
+Flappy Joyride is a fast-paced survival game that takes the classic "flap-and-dodge" mechanic and introduces scaling difficulty and ballistic threats. Unlike the original, players must contend with homing missiles and pipes with randomized orientations (horizontal, diagonal, or rotated) that significantly alter the navigation path.The game features a dynamic difficulty system where scroll speeds increase over time and hazard spawn rates accelerate, forcing players to adapt to a tightening window of survival.
 
 ---
 
 ## 🎮 Gameplay Overview
 
-- Press input to flap upward.
-- Gravity constantly pulls the bird downward.
-- Pipes spawn procedurally and scroll from right to left.
-- Passing through pipe gaps increases score.
-- Collision with pipes or ground ends the game.
-
+- Gravity-Based Flight: Click the left mouse button to flap upward ; gravity and velocity caps govern the bird's downward descent.
+- Procedural Obstacles: Pipes spawn with randomized gap positions and various orientations, including Normal, Horizontal, Diagonal, and Rotated.
+- Scaling Difficulty: Both scroll speed and obstacle frequency increase automatically as the game progresses.
+- Permadeath: Collision with any obstacle—pipe, missile, or ground—results in an immediate Game Over where the bird falls to the ground.
 ---
 
-## 🌀 Mechanical Twist: Flying Hazards
+## 🌀 Mechanical Twist: Ballistic Hazards
 
-Random birds spawn from the right side of the screen and travel left.
+The primary disruption in this version is the Missile System:
 
-If the player collides with a flying hazard:
-
-- The game does not immediately end.
-- A temporary screen shake effect is triggered.
-- Visibility and precision are impaired for a short duration.
-- After the effect ends, gameplay returns to normal.
-
-This mechanic introduces dynamic tension and recovery-based gameplay, rewarding adaptability rather than punishing every mistake with instant failure.
+- Targeted Spawning: Missiles are designed to spawn at a Y-position relative to the bird's current location to intercept the player.
+- Telegraphed Danger: A warning indicator with an animated sprite and sound appears shortly before a missile launches.
+- Dynamic Speed: Missiles travel faster than the standard environment scroll speed to increase the challenge.
+- Audio-Visual Impact: Missiles feature randomized pitch scales for launch sounds and utilize particle emitters for trails and explosions upon impact.
 
 ---
 
 ## 🧠 Architecture & Design
 
-This project demonstrates:
+This project demonstrates a robust, signal-driven architecture:
 
-- Strongly typed GDScript usage  
-- Enum-based finite state machine (Idle / Playing / Game Over)  
-- Scene separation:
-  - Player
-  - Pipe
-  - HazardBird
-  - UI
-  - Main controller
-- Signal-driven communication (score updates, state transitions, collisions)
-- Procedural pipe spawning system
-- Temporary environmental effects (screen shake system)
-- Clean separation of movement, scoring, and collision logic  
-
-Architecture prioritizes readability, modularity, and maintainability.
+- State Management: Uses boolean flags like flying, falling, and game_running to manage physics states and game flow.
+- Signal-Driven Communication: Obstacles such as Pipes and Missiles use custom hit signals to notify the Main controller of collisions without tight coupling.
+- Object Lifecycle: Efficient use of queue_free() and array management to clean up off-screen obstacles once they pass a certain coordinate.
+- Timers & Async: Utilizes Timer nodes for spawning and await functionality for telegraphed hazard timing.
 
 ---
 
@@ -64,33 +44,30 @@ Architecture prioritizes readability, modularity, and maintainability.
 
 | Action  | Input |
 |----------|--------|
-| Flap     | Space / Mouse Click |
-| Restart  | Press after Game Over |
+| Flap     | Left Mouse Click |
+| Restart  | UI Button "Reset" |
 
 ---
 
 ## ⚙️ Technical Features
 
-- Physics-based vertical movement  
-- Procedural obstacle generation  
-- Dynamic difficulty via hazard spawning  
-- Screen shake system using Camera2D offsets  
-- Collision detection using Area2D nodes  
-- Clean state transitions via FSM  
+- Kinematic Physics: Custom movement implementation using move_and_slide() for the player character.
+- Orientation Logic: Enum-based pipe rotations (NORMAL, HORIZONTAL, DIAGONAL_LEFT, DIAGONAL_RIGHT, ROTATED) to create varied gap geometries.
+- Particle Systems: Use of emitters for missile trails and explosion effects.
+- Adaptive HUD: Real-time score updates that append "m" (meters) to the distance score.
 
 ---
 
 ## 🏗 Project Structure
 
 ```
-Main.tscn
-Bird.tscn
-Pipe.tscn
-HazardBird.tscn
-HUD.tscn
+main.gd: Manages the core game loop, scoring, difficulty scaling, and procedural spawning logic.
+bird.gd: Handles physics-based movement, gravity, and animation states.
+pipe.gd: Controls randomized obstacle orientations and collision detection.
+missile.gd: Logic for ballistic hazards, including launch sounds and explosion effects.
+warning.gd: Manages the pre-spawn indicator and sound for incoming missiles.
+hud.gd: Responsible for UI management, score tracking displays, and game state buttons.
 ```
-
-Each system is isolated to prevent spaghetti code and ensure architectural integrity.
 
 ---
 
@@ -103,14 +80,6 @@ Credits can be found in:
 ```
 CREDITS.txt
 ```
-
----
-
-## ⚠️ Known Limitations
-
-- Screen shake may slightly affect UI readability.
-- Hazard spawn timing is randomized within a defined interval.
-- Object pooling is not implemented (basic spawn/despawn system used).
 
 ---
 
