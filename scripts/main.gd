@@ -137,7 +137,7 @@ func generate_pipes() -> void:
 	pipe.orientation = randi_range(0, 4)
 	pipe.position.x = screen_size.x + PIPE_DELAY
 	pipe.position.y = pipe_position()
-	#pipe.hit.connect(bird_hit)
+	pipe.hit.connect(bird_hit)
 	add_child(pipe)
 	pipes.append(pipe)
 
@@ -203,7 +203,7 @@ func spawn_missile() -> void:
 	var missile = missile_scene.instantiate()
 	missile.position = spawn_pos
 
-	#missile.hit.connect(bird_hit)
+	missile.hit.connect(bird_hit)
 	add_child(missile)
 	missiles.append(missile)
 
