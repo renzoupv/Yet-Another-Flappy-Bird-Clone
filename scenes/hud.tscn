@@ -12,14 +12,9 @@ font_size = 40
 font = ExtResource("1_ahhtf")
 font_size = 80
 
-[sub_resource type="LabelSettings" id="LabelSettings_oo0fn"]
-font = ExtResource("1_ahhtf")
-font_size = 40
-font_color = Color(0, 0, 0, 1)
-
 [sub_resource type="LabelSettings" id="LabelSettings_5ysmq"]
 font = ExtResource("1_ahhtf")
-font_size = 40
+font_size = 30
 font_color = Color(0, 0, 0, 1)
 
 [node name="HUD" type="CanvasLayer" unique_id=151399842]
@@ -53,14 +48,9 @@ vertical_alignment = 2
 offset_right = 1398.0
 offset_bottom = 46.0
 
-[node name="Header" type="Label" parent="stats" unique_id=561912578]
-layout_mode = 2
-size_flags_vertical = 8
-text = "Distance:"
-label_settings = SubResource("LabelSettings_oo0fn")
-
 [node name="ScoreLabel" type="Label" parent="stats" unique_id=1960944561]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "0 m"
 label_settings = SubResource("LabelSettings_5ysmq")
 horizontal_alignment = 1

@@ -27,6 +27,7 @@ func _ready() -> void:
 	new_game()
 
 func new_game() -> void:
+	#reset elements
 	$BGMusic.play()
 	$HUD.new_game()
 	game_running = false
@@ -37,10 +38,12 @@ func new_game() -> void:
 	score = 0
 	scroll = 0
 	$PipeTimer.wait_time = 1
-	$MissileTimer.wait_time = 3
+	$MissileTimer.wait_time = 8
 	$Bird.reset()
 	$HUD.update_score(0)
+	$Background.stop()
 	
+	#cleans obstacles on-screen
 	for p in pipes:
 		if is_instance_valid(p):
 			p.queue_free()
@@ -69,6 +72,7 @@ func start_game() -> void:
 	$HUD.start_game()
 	$PipeTimer.start()
 	$MissileTimer.start()
+	$Background.start()
 	
 func _process(delta: float) -> void:
 	if not game_running:
@@ -86,23 +90,38 @@ func _process(delta: float) -> void:
 		#missile_difficulty_timer = 0
 		#$MissileTimer.wait_time = max(0.8, $MissileTimer.wait_time - 0.05)
 	
-	if difficulty_timer > 5:
+	#difficulty scaling by adjusting wait time between spawners
+	#stops timer if value is above 2.5 to prevent pipe instakill
+	#Decrease Missile spawn interval to adjust difficulty
+	if difficulty_timer >= 5:
 		difficulty_timer = 0
-		$PipeTimer.wait_time = max(0.5, $PipeTimer.wait_time * 1.09)
-		$MissileTimer.wait_time = max(0.8, $MissileTimer.wait_time * 0.95)
+		$PipeTimer.wait_time = max(2, $PipeTimer.wait_time * 1.09)
+		$MissileTimer.wait_time = min(8, $MissileTimer.wait_time * 0.99)
+		if $PipeTimer.wait_time >= 2.5:
+			$PipeTimer.stop()
+			$MissileTimer.wait_time = min(3, $MissileTimer.wait_time * 0.99)
+			if $MissileTimer.wait_time >= 2.5:
+				$MissileTimer.wait_time = 2.5
+		
+	print($PipeTimer.wait_time)
+	print($MissileTimer.wait_time)
+	print(difficulty_timer)
 	
+	#screen scrollspeed scaling
 	scroll += scroll_speed
 	if scroll >= screen_size.x:
 		scroll = 0
 	
 	$Ground.position.x = -scroll
 	
+	#moves obstacles
 	for pipe in pipes:
 		pipe.position.x -= scroll_speed
 	
 	for missile in missiles:
 		missile.position.x -= scroll_speed + 10
 		
+	#Clean up if obstacles are out of screen
 	for i in range(pipes.size() - 1, -1, -1):
 		if is_instance_valid(pipes[i]) and pipes[i].position.x < -200:
 			pipes[i].queue_free()
@@ -117,12 +136,13 @@ func _process(delta: float) -> void:
 func _on_pipe_timer_timeout() -> void:
 	generate_pipes()
 	
+#pipe generator
 func generate_pipes() -> void:	
 	var pipe = pipe_scene.instantiate()
 	pipe.orientation = randi_range(0, 4)
 	pipe.position.x = screen_size.x + PIPE_DELAY
 	pipe.position.y = pipe_position()
-	pipe.hit.connect(bird_hit)
+	#pipe.hit.connect(bird_hit)
 	add_child(pipe)
 	pipes.append(pipe)
 
@@ -138,30 +158,61 @@ func pipe_position() -> int:
 			pipe_pos = 400
 	return pipe_pos
 
+#basis for missile spawn interval
 func _on_missile_timer_timeout() -> void:
 	generate_missile()
 
+#missile generator
 func generate_missile() -> void:
+	var burst_type = randi() % 3 
+	
+	match burst_type:
+		0:
+			await single_missile()
+		1:
+			await triple_burst()
+		2:
+			await rapid_burst()
+			
+#missile behaviors
+func single_missile():
+	await spawn_missile()
+
+func triple_burst():
+	for i in 3:
+		await spawn_missile()
+		await get_tree().create_timer(0.2).timeout
+
+func rapid_burst():
+	for i in 5:
+		await spawn_missile()
+		await get_tree().create_timer(0.08).timeout
+		
+
+#missile spawn instance
+func spawn_missile() -> void:
 	var spawn_pos = Vector2(
 		screen_size.x - 50,
-		clamp($Bird.position.y, 100, screen_size.y - 100)
+		clamp($Bird.position.y, 100, screen_size.y - 150)
 	)
+
 	var warning = warning_scene.instantiate()
 	warning.position = spawn_pos
 	add_child(warning)
-	
+
 	await get_tree().create_timer(randf_range(0.6, 1.2)).timeout
-	
+
 	if not game_running:
 		return
-	
+
 	var missile = missile_scene.instantiate()
 	missile.position = spawn_pos
-	
-	missile.hit.connect(bird_hit)
+
+	#missile.hit.connect(bird_hit)
 	add_child(missile)
 	missiles.append(missile)
-	
+
+#bird hit stops game
 func bird_hit() -> void:
 	game_running = false
 	game_over = true
@@ -169,5 +220,6 @@ func bird_hit() -> void:
 	$PipeTimer.stop()
 	$MissileTimer.stop()
 	$Bird.hit()
+	$Background.stop()
 
 	

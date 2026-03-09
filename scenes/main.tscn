@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dam3g2okjlmw6" path="res://scenes/pipe.tscn" id="5_tbgi4"]
 [ext_resource type="AudioStream" uid="uid://spdfp0q3fgp7" path="res://assets/Field of Hopes and Dreams [8-Bit; VRC6] - Deltarune.wav" id="8_tipki"]
 [ext_resource type="PackedScene" uid="uid://drkdlungo3duh" path="res://scenes/hud.tscn" id="9_85g3d"]
+[ext_resource type="Script" uid="uid://ckhvcjhj2pbov" path="res://scripts/background.gd" id="9_choun"]
 
 [node name="Main" type="Node2D" unique_id=384333111]
 script = ExtResource("1_sugp2")
@@ -20,23 +21,29 @@ pipe_scene = ExtResource("5_tbgi4")
 z_index = 10
 position = Vector2(-63, 26)
 
-[node name="background" type="Sprite2D" parent="." unique_id=532350410]
-z_index = -5
-position = Vector2(738, 409.00003)
-scale = Vector2(1.7039931, 0.9889323)
-texture = ExtResource("1_o5qli")
-
 [node name="Bird" parent="." unique_id=758951253 instance=ExtResource("2_0wfyh")]
 
 [node name="PipeTimer" type="Timer" parent="." unique_id=1139166080]
 
 [node name="MissileTimer" type="Timer" parent="." unique_id=965032422]
-wait_time = 3.0
 
 [node name="BGMusic" type="AudioStreamPlayer" parent="." unique_id=2049592045]
 stream = ExtResource("8_tipki")
 
 [node name="HUD" parent="." unique_id=151399842 instance=ExtResource("9_85g3d")]
+
+[node name="Background" type="Parallax2D" parent="." unique_id=488333572]
+z_index = -5
+scroll_scale = Vector2(0.5, 0)
+repeat_size = Vector2(1400, 0)
+autoscroll = Vector2(-170, 0)
+script = ExtResource("9_choun")
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=427498125]
+z_index = -5
+position = Vector2(747.43744, 409.00003)
+scale = Vector2(1.7258391, 0.9889323)
+texture = ExtResource("1_o5qli")
 
 [connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
 [connection signal="timeout" from="MissileTimer" to="." method="_on_missile_timer_timeout"]

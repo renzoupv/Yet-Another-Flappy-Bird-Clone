@@ -38,6 +38,7 @@ func flap() -> void:
 	velocity.y = FLAP_SPEED
 	
 func hit() -> void:
+	velocity = Vector2.ZERO
 	flying = false
 	falling = true
 	$AnimatedSprite2D.stop()
