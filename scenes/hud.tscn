@@ -17,6 +17,14 @@ font = ExtResource("1_ahhtf")
 font_size = 30
 font_color = Color(0, 0, 0, 1)
 
+[sub_resource type="InputEventKey" id="InputEventKey_5ysmq"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="Shortcut" id="Shortcut_6fi6k"]
+events = [SubResource("InputEventKey_5ysmq")]
+
 [node name="HUD" type="CanvasLayer" unique_id=151399842]
 script = ExtResource("1_oo0fn")
 
@@ -33,7 +41,7 @@ grow_vertical = 2
 [node name="Instruc" type="Label" parent="display" unique_id=335011804]
 layout_mode = 2
 size_flags_vertical = 8
-text = "Click Anywhere to Start"
+text = "Press Space to Start!"
 label_settings = SubResource("LabelSettings_6fi6k")
 horizontal_alignment = 1
 
@@ -68,6 +76,7 @@ offset_right = 64.0
 offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
+shortcut = SubResource("Shortcut_6fi6k")
 icon = ExtResource("3_5ysmq")
 
 [connection signal="pressed" from="reset" to="." method="_on_reset_pressed"]

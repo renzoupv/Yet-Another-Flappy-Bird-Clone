@@ -56,8 +56,8 @@ func new_game() -> void:
 
 func _input(event) -> void:
 	if game_over == false:
-		if event is InputEventMouseButton:
-			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if event is InputEventKey:
+			if event.pressed and event.keycode == KEY_SPACE:
 				if game_running == false :
 					start_game()
 				else:
