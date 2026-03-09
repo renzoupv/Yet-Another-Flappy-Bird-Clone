@@ -27,7 +27,7 @@ func _ready() -> void:
 	new_game()
 
 func new_game() -> void:
-	#reset elements
+	#reset values
 	$BGMusic.play()
 	$HUD.new_game()
 	game_running = false
@@ -77,41 +77,36 @@ func start_game() -> void:
 func _process(delta: float) -> void:
 	if not game_running:
 		return
-		
+	
+	#update score based on scroll speed
 	distance_score += scroll_speed * delta
 	score = int(distance_score)
 	$HUD.update_score(score)
 	
-	scroll_speed += delta * 0.5
-	difficulty_timer += delta
-	#missile_difficulty_timer += delta
-	#
-	#if missile_difficulty_timer > 10:
-		#missile_difficulty_timer = 0
-		#$MissileTimer.wait_time = max(0.8, $MissileTimer.wait_time - 0.05)
-	
 	#difficulty scaling by adjusting wait time between spawners
 	#stops timer if value is above 2.5 to prevent pipe instakill
 	#Decrease Missile spawn interval to adjust difficulty
+	difficulty_timer += delta
 	if difficulty_timer >= 5:
 		difficulty_timer = 0
-		$PipeTimer.wait_time = max(2, $PipeTimer.wait_time * 1.09)
-		$MissileTimer.wait_time = min(8, $MissileTimer.wait_time * 0.99)
+		$PipeTimer.wait_time = max(2.5, $PipeTimer.wait_time * 1.09)
+		$MissileTimer.wait_time = min(2.5, $MissileTimer.wait_time * 0.99)
 		if $PipeTimer.wait_time >= 2.5:
 			$PipeTimer.stop()
 			$MissileTimer.wait_time = min(3, $MissileTimer.wait_time * 0.99)
-			if $MissileTimer.wait_time >= 2.5:
-				$MissileTimer.wait_time = 2.5
-		
+			if $MissileTimer.wait_time <= 2:
+				$MissileTimer.wait_time = 2
+	
+	#Difficulty debugger: 
 	print($PipeTimer.wait_time)
 	print($MissileTimer.wait_time)
 	print(difficulty_timer)
 	
 	#screen scrollspeed scaling
+	scroll_speed += delta * 0.5
 	scroll += scroll_speed
 	if scroll >= screen_size.x:
 		scroll = 0
-	
 	$Ground.position.x = -scroll
 	
 	#moves obstacles
@@ -132,7 +127,7 @@ func _process(delta: float) -> void:
 			missiles[i].queue_free()
 			missiles.remove_at(i)
 
-
+#basis for pipe spawn interval
 func _on_pipe_timer_timeout() -> void:
 	generate_pipes()
 	
@@ -193,14 +188,14 @@ func rapid_burst():
 func spawn_missile() -> void:
 	var spawn_pos = Vector2(
 		screen_size.x - 50,
-		clamp($Bird.position.y, 100, screen_size.y - 150)
+		clamp($Bird.position.y, 100, screen_size.y - 60)
 	)
 
 	var warning = warning_scene.instantiate()
 	warning.position = spawn_pos
 	add_child(warning)
 
-	await get_tree().create_timer(randf_range(0.6, 1.2)).timeout
+	await get_tree().create_timer(randf_range(0.3, 1.2)).timeout
 
 	if not game_running:
 		return

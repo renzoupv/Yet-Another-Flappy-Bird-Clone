@@ -41,6 +41,7 @@ animations = [{
 }]
 
 [node name="Node2D" type="Node2D" unique_id=1924682548]
+z_index = 11
 script = ExtResource("1_fgfcp")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1661549977]
