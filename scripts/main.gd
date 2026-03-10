@@ -89,18 +89,18 @@ func _process(delta: float) -> void:
 	difficulty_timer += delta
 	if difficulty_timer >= 5:
 		difficulty_timer = 0
-		$PipeTimer.wait_time = max(2.5, $PipeTimer.wait_time * 1.09)
-		$MissileTimer.wait_time = min(2.5, $MissileTimer.wait_time * 0.99)
+		$PipeTimer.wait_time = max(1, $PipeTimer.wait_time * 1.09)
+		$MissileTimer.wait_time = min(8, $MissileTimer.wait_time * 0.99)
 		if $PipeTimer.wait_time >= 2.5:
 			$PipeTimer.stop()
 			$MissileTimer.wait_time = min(3, $MissileTimer.wait_time * 0.99)
 			if $MissileTimer.wait_time <= 2:
 				$MissileTimer.wait_time = 2
 	
-	#Difficulty debugger: 
-	print($PipeTimer.wait_time)
-	print($MissileTimer.wait_time)
-	print(difficulty_timer)
+	##Difficulty debugger: 
+	#print($PipeTimer.wait_time)
+	#print($MissileTimer.wait_time)
+	#print(difficulty_timer)
 	
 	#screen scrollspeed scaling
 	scroll_speed += delta * 0.5
