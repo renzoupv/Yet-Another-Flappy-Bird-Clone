@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://b52f2vul4x5et"]
+
+[ext_resource type="Texture2D" uid="uid://dxybxc0lqnb1w" path="res://assets/ground.png" id="1_yh8r4"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pybca"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mi8v4"]
+size = Vector2(2609, 168)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lmksl"]
+size = Vector2(2604, 168.5)
+
+[node name="ground" type="Node2D" unique_id=1274866132]
+z_index = 2
+
+[node name="botgrnd" type="Sprite2D" parent="." unique_id=554066413]
+position = Vector2(1300, 767)
+scale = Vector2(1.5086805, 1)
+texture = ExtResource("1_yh8r4")
+
+[node name="topgrnd" type="Sprite2D" parent="." unique_id=1237361401]
+position = Vector2(1303.4612, 8.000004)
+rotation = -3.1415925
+scale = Vector2(1.5082691, 1)
+texture = ExtResource("1_yh8r4")
+
+[node name="topcollshpe" type="StaticBody2D" parent="." unique_id=769620694]
+position = Vector2(864, -43)
+physics_material_override = SubResource("PhysicsMaterial_pybca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="topcollshpe" unique_id=1267543059]
+position = Vector2(440.5, 51)
+shape = SubResource("RectangleShape2D_mi8v4")
+
+[node name="botcollshpe" type="StaticBody2D" parent="." unique_id=622640366]
+position = Vector2(864, 692.75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="botcollshpe" unique_id=1788437896]
+z_index = 2
+z_as_relative = false
+position = Vector2(438, 74.25)
+shape = SubResource("RectangleShape2D_lmksl")
