@@ -1,14 +1,15 @@
 extends CharacterBody2D
 
 const GRAVITY : int = 1000
-const MAX_VEL : int = 650
-const FLAP_SPEED : int = -440
+const MAX_VEL : int = 650 #jump height
+const FLAP_SPEED : int = -450
 var flying : bool = false
 var falling : bool = false
 const START_POS = Vector2(100, 300)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
 	reset()
 
 #move bird to starting pos
